@@ -9,6 +9,23 @@ import UIKit
 
 final class ListViewController: BaseViewController<ListViewModel> {
     
+    private lazy var searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        searchBar.backgroundColor = .clear
+        searchBar.placeholder = "Search City"
+        searchBar.searchTextField.font = .systemFont(ofSize: 14, weight: .semibold)
+        searchBar.tintColor = .label
+        searchBar.searchTextField.backgroundColor = .systemFill
+        searchBar.backgroundImage = UIImage()
+        searchBar.setImage(UIImage(systemName: "magnifyingglass"), for: .search, state: .normal)
+        searchBar.setImage(UIImage(systemName: "magnifyingglass")?.withTintColor(.purple, renderingMode: .alwaysTemplate), for: .search, state: .focused)
+        searchBar.returnKeyType = .search
+        searchBar.searchTextField.addCloseToolbar()
+        searchBar.delegate = self
+        return searchBar
+    }()
+    
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -22,16 +39,28 @@ final class ListViewController: BaseViewController<ListViewModel> {
 
 extension ListViewController {
     func setupUI() {
+        view.addSubview(searchBar)
         view.addSubview(collectionView)
     }
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
+            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
+            searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
+            searchBar.bottomAnchor.constraint(equalTo: collectionView.topAnchor, constant: -8),
+            
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
+    }
+}
+
+extension ListViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        //TODO: search it
     }
 }
 

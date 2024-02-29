@@ -15,6 +15,8 @@
 		3029A6DB2B90F6BC0040268D /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3029A6DA2B90F6BC0040268D /* MainViewController.swift */; };
 		3029A6DD2B90FA570040268D /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3029A6DC2B90FA570040268D /* MainViewModel.swift */; };
 		3029A6DF2B91066D0040268D /* ListWeatherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3029A6DE2B91066D0040268D /* ListWeatherCell.swift */; };
+		3029A6E52B912B2B0040268D /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3029A6E42B912B2B0040268D /* UITextField+Extension.swift */; };
+		3029A6E72B912C230040268D /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3029A6E62B912C230040268D /* UIViewController+Extension.swift */; };
 		304513072B90E13F00AA7966 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304513062B90E13F00AA7966 /* AppDelegate.swift */; };
 		304513092B90E13F00AA7966 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304513082B90E13F00AA7966 /* SceneDelegate.swift */; };
 		304513112B90E13F00AA7966 /* Weatherify.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3045130F2B90E13F00AA7966 /* Weatherify.xcdatamodeld */; };
@@ -54,6 +56,8 @@
 		3029A6DA2B90F6BC0040268D /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		3029A6DC2B90FA570040268D /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		3029A6DE2B91066D0040268D /* ListWeatherCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListWeatherCell.swift; sourceTree = "<group>"; };
+		3029A6E42B912B2B0040268D /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
+		3029A6E62B912C230040268D /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		304513032B90E13F00AA7966 /* Weatherify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Weatherify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		304513062B90E13F00AA7966 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		304513082B90E13F00AA7966 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -114,6 +118,15 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
+		3029A6E32B912B190040268D /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				3029A6E42B912B2B0040268D /* UITextField+Extension.swift */,
+				3029A6E62B912C230040268D /* UIViewController+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		304512FA2B90E13F00AA7966 = {
 			isa = PBXGroup;
 			children = (
@@ -137,6 +150,7 @@
 		304513052B90E13F00AA7966 /* Weatherify */ = {
 			isa = PBXGroup;
 			children = (
+				3029A6E32B912B190040268D /* Extensions */,
 				3045133C2B90E2EC00AA7966 /* Modules */,
 				304513502B90E39B00AA7966 /* Support Files */,
 				3045130F2B90E13F00AA7966 /* Weatherify.xcdatamodeld */,
@@ -366,6 +380,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3029A6E72B912C230040268D /* UIViewController+Extension.swift in Sources */,
+				3029A6E52B912B2B0040268D /* UITextField+Extension.swift in Sources */,
 				304513072B90E13F00AA7966 /* AppDelegate.swift in Sources */,
 				304513092B90E13F00AA7966 /* SceneDelegate.swift in Sources */,
 				304513452B90E34100AA7966 /* DetailViewController.swift in Sources */,

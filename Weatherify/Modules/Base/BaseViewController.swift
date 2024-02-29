@@ -20,7 +20,7 @@ class BaseViewControllerClass<VM>: UIViewController where VM: BaseViewModel {
     private let activityIndicatorContainer: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .secondarySystemGroupedBackground
+        view.backgroundColor = .secondaryLabel
         view.alpha = 0.15
         view.isHidden = true
         return view
@@ -29,14 +29,14 @@ class BaseViewControllerClass<VM>: UIViewController where VM: BaseViewModel {
     private let activityIndicator: UIActivityIndicatorView = {
         let activityIndicator = UIActivityIndicatorView(style: .large)
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        activityIndicator.color = .systemBackground
+        activityIndicator.color = .systemFill
         return activityIndicator
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .secondarySystemBackground
-        
+        self.view.backgroundColor = .systemBackground
+        hideKeyboardWhenTappedAround()
         guard let controller = self as? BaseViewController<VM> else {
             return
         }

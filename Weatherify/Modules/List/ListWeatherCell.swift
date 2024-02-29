@@ -17,7 +17,7 @@ final class ListWeatherCell: UICollectionViewCell {
         stackView.backgroundColor = .secondarySystemFill
         stackView.spacing = 16
         stackView.clipsToBounds = true
-        stackView.layer.cornerRadius = 16
+        stackView.layer.cornerRadius = 8
         stackView.layoutMargins = .init(top: 16, left: 16, bottom: 16, right: 16)
         stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
