@@ -30,6 +30,8 @@ final class ListViewController: BaseViewController<ListViewModel> {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .clear
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.contentInset = .init(top: 12, left: 0, bottom: 12, right: 0)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(ListWeatherCell.self, forCellWithReuseIdentifier: ListWeatherCell.reuseIdentifier)
@@ -48,7 +50,7 @@ extension ListViewController {
             searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
             searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
-            searchBar.bottomAnchor.constraint(equalTo: collectionView.topAnchor, constant: -8),
+            searchBar.bottomAnchor.constraint(equalTo: collectionView.topAnchor),
             
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
@@ -67,7 +69,7 @@ extension ListViewController: UISearchBarDelegate {
 extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return 10
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
