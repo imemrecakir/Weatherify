@@ -7,12 +7,7 @@
 
 import UIKit
 
-final class FavouriteViewController: BaseViewController<FavouriteViewModel> {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-}
+final class FavouriteViewController: BaseViewController<FavouriteViewModel> {}
 
 extension FavouriteViewController {
     func setupUI() {}

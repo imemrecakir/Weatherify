@@ -7,15 +7,13 @@
 
 import UIKit
 
-final class DetailViewController: BaseViewController<DetailViewModel> {
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-}
+final class DetailViewController: BaseViewController<DetailViewModel> {}
 
 extension DetailViewController {
-    func setupUI() {}
+    func setupUI() {
+        title = "Detail"
+        navigationController?.navigationItem.largeTitleDisplayMode = .inline
+    }
     
     func setupConstraints() {}
 }
