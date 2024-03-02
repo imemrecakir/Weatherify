@@ -64,7 +64,7 @@ final class ListWeatherCell: UICollectionViewCell {
     private lazy var locationIcon: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(systemName: "mappin.and.ellipse")
+        imageView.image = UIImage(systemName: "mappin")
         imageView.tintColor = UIColor.label
         return imageView
     }()
