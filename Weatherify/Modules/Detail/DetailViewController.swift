@@ -117,8 +117,6 @@ extension DetailViewController {
         
         view.addSubview(contentStackView)
         
-//        contentStackView.setCustomSpacing(4, after: forecastTitleLabel)
-        
         configureViews()
     }
     
@@ -128,9 +126,7 @@ extension DetailViewController {
             contentStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             contentStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             contentStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            
-//            weatherIcon.heightAnchor.constraint(equalTo: contentStackView.heightAnchor, multiplier: 0.4),
-            
+
             humidityWindDivider.widthAnchor.constraint(equalToConstant: 1),
             
             forecastCollectionView.heightAnchor.constraint(equalToConstant: 120)
