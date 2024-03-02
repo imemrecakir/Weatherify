@@ -12,6 +12,7 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        setNavigationBarStyle()
         return true
     }
 
@@ -47,5 +48,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
         }
+    }
+    
+    private func setNavigationBarStyle() {
+        UINavigationBar.appearance().prefersLargeTitles = true
+        UINavigationItem().largeTitleDisplayMode = .always
     }
 }

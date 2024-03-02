@@ -94,12 +94,6 @@ final class DetailViewController: BaseViewController<DetailViewModel> {
         return collectionView
     }()
     
-    override func viewWillDisappear(_ animated: Bool) {
-        navigationController?.navigationBar.prefersLargeTitles = false
-        navigationItem.largeTitleDisplayMode = .automatic
-        super.viewWillDisappear(animated)
-    }
-    
     @objc private func favouriteBarButtonItemTapped() {
         //TODO: add to favourite list
         print("favourite button tapped")
@@ -109,8 +103,6 @@ final class DetailViewController: BaseViewController<DetailViewModel> {
 extension DetailViewController {
     func setupUI() {
         title = "Istanbul, Turkey"
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.largeTitleDisplayMode = .always
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: favouriteBarButtonItem)
         
         view.addSubview(weatherDescriptionLabel)
