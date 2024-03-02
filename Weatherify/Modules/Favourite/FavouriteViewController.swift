@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class FavouriteViewController: BaseViewController<FavouriteViewModel> {
+final class FavouriteViewController: BaseViewController {
     
     private var cities = ["Berlin", "Madrid", "İstanbul", "New York", "Londra"]
     private var countries = ["Germany", "Spaint", "Turkey", "USA", "England"]

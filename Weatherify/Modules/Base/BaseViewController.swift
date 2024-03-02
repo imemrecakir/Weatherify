@@ -12,10 +12,9 @@ protocol BaseViewControllerProtocol {
     func setupConstraints()
 }
 
-typealias BaseViewController<VM> = BaseViewControllerProtocol & BaseViewControllerClass<VM> where VM: BaseViewModel
+typealias BaseViewController = BaseViewControllerProtocol & BaseViewControllerClass
 
-class BaseViewControllerClass<VM>: UIViewController where VM: BaseViewModel {
-    var viewModel: VM!
+class BaseViewControllerClass: UIViewController {
     
     private let activityIndicatorContainer: UIView = {
         let view = UIView()
@@ -32,12 +31,12 @@ class BaseViewControllerClass<VM>: UIViewController where VM: BaseViewModel {
         activityIndicator.color = .systemFill
         return activityIndicator
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .systemBackground
+        view.backgroundColor = .systemBackground
         hideKeyboardWhenTappedAround()
-        guard let controller = self as? BaseViewController<VM> else {
+        guard let controller = self as? BaseViewController else {
             return
         }
 
@@ -67,16 +66,18 @@ class BaseViewControllerClass<VM>: UIViewController where VM: BaseViewModel {
     }
 
     func showLoading(_ isActive: Bool) {
-        activityIndicatorContainer.isHidden = !isActive
-        
-        if isActive {
-            activityIndicator.startAnimating()
-            view.bringSubviewToFront(activityIndicatorContainer)
-            view.bringSubviewToFront(activityIndicator)
-        } else {
-            view.sendSubviewToBack(activityIndicator)
-            view.sendSubviewToBack(activityIndicatorContainer)
-            activityIndicator.stopAnimating()
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.activityIndicatorContainer.isHidden = !isActive
+            if isActive {
+                self.activityIndicator.startAnimating()
+                self.view.bringSubviewToFront(self.activityIndicatorContainer)
+                self.view.bringSubviewToFront(self.activityIndicator)
+            } else {
+                self.view.sendSubviewToBack(self.activityIndicator)
+                self.view.sendSubviewToBack(self.activityIndicatorContainer)
+                self.activityIndicator.stopAnimating()
+            }
         }
     }
 }

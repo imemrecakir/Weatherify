@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class DetailViewController: BaseViewController<DetailViewModel> {
+final class DetailViewController: BaseViewController {
     
     private lazy var selectedForecastIndex = 0 {
         didSet {

@@ -28,7 +28,7 @@ final class MainViewController: UITabBarController {
         tabBar.backgroundColor = .secondarySystemBackground
         tabBar.layer.addSublayer(seperator)
         viewControllers = [
-            setupViewController(with: ListViewController(),
+            setupViewController(with: ListRouter().initialViewController,
                                 title: "Weatherify",
                                 imageName: "house"),
             setupViewController(with: FavouriteViewController(),

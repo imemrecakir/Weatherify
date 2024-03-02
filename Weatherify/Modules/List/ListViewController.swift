@@ -7,7 +7,9 @@
 
 import UIKit
 
-final class ListViewController: BaseViewController<ListViewModel> {
+final class ListViewController: BaseViewController {
+    
+    let viewModel: ListViewModel
     
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -20,8 +22,7 @@ final class ListViewController: BaseViewController<ListViewModel> {
         searchBar.backgroundImage = UIImage()
         searchBar.setImage(UIImage(systemName: "magnifyingglass"), for: .search, state: .normal)
         searchBar.setImage(UIImage(systemName: "magnifyingglass")?.withTintColor(.purple, renderingMode: .alwaysTemplate), for: .search, state: .focused)
-        searchBar.returnKeyType = .search
-        searchBar.searchTextField.addCloseToolbar()
+        searchBar.returnKeyType = .done
         searchBar.delegate = self
         return searchBar
     }()
@@ -37,6 +38,26 @@ final class ListViewController: BaseViewController<ListViewModel> {
         collectionView.register(ListWeatherCell.self, forCellWithReuseIdentifier: ListWeatherCell.reuseIdentifier)
         return collectionView
     }()
+    
+    private lazy var emptyMessageLabel: UILabel = {
+        let label = UILabel()
+        label.text = "The city was not found"
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.font = .monospacedSystemFont(ofSize: 18, weight: .medium)
+        label.center = collectionView.center
+        label.sizeToFit()
+        return label
+    }()
+    
+    init(viewModel: ListViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 extension ListViewController {
@@ -57,24 +78,54 @@ extension ListViewController {
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
+    
+    func reloadCollectionView() {
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+    }
+}
+
+extension ListViewController: ListViewModelDelegate {
+    func isLoading(_ isLoading: Bool) {
+        showLoading(isLoading)
+    }
+    
+    func weathersFetched() {
+        reloadCollectionView()
+    }
+    
+    func weathersSearched() {
+        reloadCollectionView()
+    }
 }
 
 extension ListViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        //TODO: search it
+        searchBar.resignFirstResponder()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        viewModel.searchWeathers(query: searchBar.text ?? "")
     }
 }
 
 extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        if viewModel.displayedWeathers.isEmpty {
+            collectionView.backgroundView = emptyMessageLabel
+        } else {
+            collectionView.backgroundView = nil
+        }
+        
+        return viewModel.displayedWeathers.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ListWeatherCell.reuseIdentifier, for: indexPath) as? ListWeatherCell {
-            cell.configureCell()
+            cell.configureCell(weather: viewModel.displayedWeathers[indexPath.item])
             return cell
         }
         
@@ -93,8 +144,25 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let detailViewController = DetailViewController()
-        detailViewController.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(detailViewController, animated: true)
+        print(indexPath.item)
+//        let detailViewController = DetailViewController()
+//        detailViewController.hidesBottomBarWhenPushed = true
+//        navigationController?.pushViewController(detailViewController, animated: true)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // Check if the user has scrolled to the bottom of the collection view
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let screenHeight = scrollView.frame.height
+        
+        let threshold: CGFloat = 100
+        let lastItemIndex = collectionView.numberOfItems(inSection: 0) - 1
+ 
+        if offsetY + screenHeight + threshold >= contentHeight && lastItemIndex >= 0 {
+            if !viewModel.isPaginationReachedEndLimit && !viewModel.isLoading {
+                viewModel.fetchWeathers()
+            }
+        }
     }
 }

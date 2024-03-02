@@ -16,6 +16,8 @@ final class ListWeatherCell: UICollectionViewCell {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = .secondarySystemFill
         stackView.spacing = 16
+        stackView.distribution = .fillProportionally
+        stackView.alignment = .center
         stackView.clipsToBounds = true
         stackView.layer.cornerRadius = 8
         stackView.layoutMargins = .init(top: 16, left: 16, bottom: 16, right: 16)
@@ -65,7 +67,6 @@ final class ListWeatherCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(systemName: "mappin")
-        imageView.tintColor = UIColor.label
         return imageView
     }()
     
@@ -73,6 +74,7 @@ final class ListWeatherCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = .label
         label.font = .systemFont(ofSize: 18, weight: .semibold)
+        label.setContentHuggingPriority(.required, for: .horizontal)
         return label
     }()
     
@@ -81,6 +83,7 @@ final class ListWeatherCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
         imageView.tintColor = .systemYellow //TODO: change color
+        imageView.setContentHuggingPriority(.required, for: .horizontal)
         return imageView
     }()
     
@@ -94,8 +97,8 @@ final class ListWeatherCell: UICollectionViewCell {
             contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             contentStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             
-            weatherIcon.widthAnchor.constraint(equalToConstant: 60),
-            weatherIcon.heightAnchor.constraint(equalToConstant: 60)
+            weatherIcon.widthAnchor.constraint(equalToConstant: 30),
+            weatherIcon.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
     
@@ -103,11 +106,10 @@ final class ListWeatherCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureCell() {
-        let temperature: Double = 22.7
-        temperatureLabel.text = temperature.formattedTemperature()
-        weatherDescription.text = "Partly Cloudy"
-        cityNameLabel.text = "İstanbul, Turkey"
-        weatherIcon.image = UIImage(systemName: "cloud.sun")
+    func configureCell(weather: WeatherModel) {
+        temperatureLabel.text = weather.temperature.formattedTemperature()
+        weatherDescription.text = weather.weatherDescription.rawValue
+        cityNameLabel.text = "\(weather.city), \(weather.country)"
+        weatherIcon.image = UIImage(systemName: weather.weatherDescription.iconName)
     }
 }
