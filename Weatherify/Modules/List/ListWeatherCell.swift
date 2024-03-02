@@ -79,6 +79,8 @@ final class ListWeatherCell: UICollectionViewCell {
     private lazy var weatherIcon: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .systemYellow //TODO: change color
         return imageView
     }()
     
@@ -102,22 +104,10 @@ final class ListWeatherCell: UICollectionViewCell {
     }
     
     func configureCell() {
-        let attributedTemperatureString = NSMutableAttributedString(string: "25",
-                                                         attributes: [.font: UIFont.systemFont(ofSize: temperatureLabel.font.pointSize)])
-        
-        attributedTemperatureString.append(NSMutableAttributedString(string: "°C",
-                                                          attributes: [
-                                                            .font: UIFont.systemFont(ofSize: 12),
-                                                            .baselineOffset: NSNumber(value: 10)
-                                                          ]))
-        
-        temperatureLabel.attributedText = attributedTemperatureString
-        
+        let temperature: Double = 22.7
+        temperatureLabel.attributedText = temperature.attributedTemperature(fontSize: temperatureLabel.font.pointSize)
         weatherDescription.text = "Partly Cloudy"
-        
         cityNameLabel.text = "İstanbul, Turkey"
-        
         weatherIcon.image = UIImage(systemName: "cloud.sun")
-        weatherIcon.tintColor = .systemYellow //TODO: change color
     }
 }
