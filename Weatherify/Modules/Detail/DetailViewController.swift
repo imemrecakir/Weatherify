@@ -28,6 +28,7 @@ final class DetailViewController: BaseViewController<DetailViewModel> {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.spacing = 16
+        stackView.alignment = .center
         stackView.layoutMargins = .init(top: 24, left: 16, bottom: 8, right: 16)
         stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
@@ -43,8 +44,7 @@ final class DetailViewController: BaseViewController<DetailViewModel> {
     private lazy var weatherDescriptionLabel: UILabel = {
         let label = UILabel()
         label.textColor = .secondaryLabel
-        label.font = .systemFont(ofSize: 18, weight: .medium)
-        label.textAlignment = .center
+        label.font = .boldSystemFont(ofSize: 18)
         label.setContentHuggingPriority(.required, for: .vertical)
         return label
     }()
@@ -52,8 +52,7 @@ final class DetailViewController: BaseViewController<DetailViewModel> {
     private lazy var temperatureLabel: UILabel = {
         let label = UILabel()
         label.textColor = .label
-        label.font = .monospacedDigitSystemFont(ofSize: 72, weight: .black)
-        label.textAlignment = .center
+        label.font = .monospacedDigitSystemFont(ofSize: 84, weight: .black)
         label.setContentHuggingPriority(.required, for: .vertical)
         return label
     }()
@@ -61,7 +60,8 @@ final class DetailViewController: BaseViewController<DetailViewModel> {
     private lazy var humidityWindStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [UIView(), humidityView, humidityWindDivider, windView, UIView()])
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.distribution = .equalCentering
+        stackView.spacing = 12
+        stackView.setContentHuggingPriority(.required, for: .vertical)
         return stackView
     }()
     
@@ -127,8 +127,11 @@ extension DetailViewController {
             contentStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             contentStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 
+            weatherIcon.widthAnchor.constraint(equalTo: contentStackView.layoutMarginsGuide.widthAnchor),
+            
             humidityWindDivider.widthAnchor.constraint(equalToConstant: 1),
             
+            forecastCollectionView.widthAnchor.constraint(equalTo: contentStackView.layoutMarginsGuide.widthAnchor),
             forecastCollectionView.heightAnchor.constraint(equalToConstant: 120)
         ])
     }
@@ -137,9 +140,6 @@ extension DetailViewController {
         weatherIcon.image = UIImage(systemName: "cloud.sun")
         weatherDescriptionLabel.text = "Partly cloudy"
         let temperature: Double = 22
-        temperatureLabel.attributedText = temperature.attributedTemperature(fontSize: temperatureLabel.font.pointSize)
-        humidityView.configure(name: "Humidity", iconName: "drop.halffull", value: "50", suffix: "%")
-        windView.configure(name: "Wind speed", iconName: "wind", value: "7", suffix: " km/h")
         temperatureLabel.text = temperature.formattedTemperature()
         humidityView.configure(name: "Humidity", iconName: "drop.halffull", value: "50", unit: "%")
         windView.configure(name: "Wind speed", iconName: "wind", value: "7", unit: " km/h")
