@@ -9,7 +9,7 @@ import UIKit
 
 final class DetailViewController: BaseViewController<DetailViewModel> {
     
-    private var selectedForecastIndex = 0 {
+    private lazy var selectedForecastIndex = 0 {
         didSet {
             configureViews()
         }
@@ -23,13 +23,22 @@ final class DetailViewController: BaseViewController<DetailViewModel> {
         return button
     }()
     
+    private lazy var weatherDescriptionLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .secondaryLabel
+        label.font = .systemFont(ofSize: 14, weight: .medium)
+        label.setContentHuggingPriority(.required, for: .vertical)
+        return label
+    }()
+    
     private lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [weatherIcon, weatherDescriptionLabel, temperatureLabel, humidityWindStackView, forecastCollectionView])
+        let stackView = UIStackView(arrangedSubviews: [weatherIcon, temperatureLabel, humidityWindStackView, forecastCollectionView])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.spacing = 16
+        stackView.spacing = 24
         stackView.alignment = .center
-        stackView.layoutMargins = .init(top: 24, left: 16, bottom: 8, right: 16)
+        stackView.layoutMargins = .init(top: 0, left: 16, bottom: 8, right: 16)
         stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
     }()
@@ -39,14 +48,6 @@ final class DetailViewController: BaseViewController<DetailViewModel> {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
         return imageView
-    }()
-    
-    private lazy var weatherDescriptionLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .secondaryLabel
-        label.font = .boldSystemFont(ofSize: 18)
-        label.setContentHuggingPriority(.required, for: .vertical)
-        return label
     }()
     
     private lazy var temperatureLabel: UILabel = {
@@ -80,15 +81,6 @@ final class DetailViewController: BaseViewController<DetailViewModel> {
         return DetailWeatherInformationView()
     }()
     
-    private lazy var forecastTitleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Forecasts"
-        label.textColor = .label
-        label.font = .monospacedSystemFont(ofSize: 14, weight: .medium)
-        return label
-    }()
-    
     private lazy var forecastCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -101,6 +93,12 @@ final class DetailViewController: BaseViewController<DetailViewModel> {
         collectionView.register(DetailForecastCell.self, forCellWithReuseIdentifier: DetailForecastCell.reuseIdentifier)
         return collectionView
     }()
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationItem.largeTitleDisplayMode = .automatic
+        super.viewWillDisappear(animated)
+    }
     
     @objc private func favouriteBarButtonItemTapped() {
         //TODO: add to favourite list
@@ -115,6 +113,7 @@ extension DetailViewController {
         navigationItem.largeTitleDisplayMode = .always
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: favouriteBarButtonItem)
         
+        view.addSubview(weatherDescriptionLabel)
         view.addSubview(contentStackView)
         
         configureViews()
@@ -122,8 +121,11 @@ extension DetailViewController {
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
+            weatherDescriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            weatherDescriptionLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            weatherDescriptionLabel.bottomAnchor.constraint(equalTo: contentStackView.topAnchor),
+            
             contentStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            contentStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             contentStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             contentStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 
