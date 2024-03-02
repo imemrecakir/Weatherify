@@ -31,6 +31,7 @@
 		304513412B90E33800AA7966 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304513402B90E33800AA7966 /* ListViewController.swift */; };
 		304513452B90E34100AA7966 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304513442B90E34100AA7966 /* DetailViewController.swift */; };
 		304513492B90E34900AA7966 /* FavouriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304513482B90E34900AA7966 /* FavouriteViewController.swift */; };
+		30F3E37E2B92D0EE007DEC23 /* FavouriteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F3E37D2B92D0EE007DEC23 /* FavouriteCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		304513402B90E33800AA7966 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		304513442B90E34100AA7966 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		304513482B90E34900AA7966 /* FavouriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteViewController.swift; sourceTree = "<group>"; };
+		30F3E37D2B92D0EE007DEC23 /* FavouriteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -220,6 +222,7 @@
 			children = (
 				304513482B90E34900AA7966 /* FavouriteViewController.swift */,
 				3029A6D62B90F69B0040268D /* FavouriteViewModel.swift */,
+				30F3E37D2B92D0EE007DEC23 /* FavouriteCell.swift */,
 			);
 			path = Favourite;
 			sourceTree = "<group>";
@@ -404,6 +407,7 @@
 				304513412B90E33800AA7966 /* ListViewController.swift in Sources */,
 				303A39982B928BF70025F5B4 /* DetailForecastCell.swift in Sources */,
 				3029A6D72B90F69B0040268D /* FavouriteViewModel.swift in Sources */,
+				30F3E37E2B92D0EE007DEC23 /* FavouriteCell.swift in Sources */,
 				3029A6D32B90F61B0040268D /* BaseViewModel.swift in Sources */,
 				3029A6CE2B90F3F70040268D /* BaseViewController.swift in Sources */,
 				304513112B90E13F00AA7966 /* Weatherify.xcdatamodeld in Sources */,
