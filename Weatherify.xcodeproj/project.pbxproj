@@ -17,6 +17,9 @@
 		3029A6DF2B91066D0040268D /* ListWeatherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3029A6DE2B91066D0040268D /* ListWeatherCell.swift */; };
 		3029A6E52B912B2B0040268D /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3029A6E42B912B2B0040268D /* UITextField+Extension.swift */; };
 		3029A6E72B912C230040268D /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3029A6E62B912C230040268D /* UIViewController+Extension.swift */; };
+		303A39922B927B810025F5B4 /* DetailWeatherInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303A39912B927B810025F5B4 /* DetailWeatherInformationView.swift */; };
+		303A39962B927DEA0025F5B4 /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303A39952B927DEA0025F5B4 /* Double+Extension.swift */; };
+		303A39982B928BF70025F5B4 /* DetailForecastCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303A39972B928BF70025F5B4 /* DetailForecastCell.swift */; };
 		304513072B90E13F00AA7966 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304513062B90E13F00AA7966 /* AppDelegate.swift */; };
 		304513092B90E13F00AA7966 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304513082B90E13F00AA7966 /* SceneDelegate.swift */; };
 		304513112B90E13F00AA7966 /* Weatherify.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3045130F2B90E13F00AA7966 /* Weatherify.xcdatamodeld */; };
@@ -58,6 +61,9 @@
 		3029A6DE2B91066D0040268D /* ListWeatherCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListWeatherCell.swift; sourceTree = "<group>"; };
 		3029A6E42B912B2B0040268D /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
 		3029A6E62B912C230040268D /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
+		303A39912B927B810025F5B4 /* DetailWeatherInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailWeatherInformationView.swift; sourceTree = "<group>"; };
+		303A39952B927DEA0025F5B4 /* Double+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extension.swift"; sourceTree = "<group>"; };
+		303A39972B928BF70025F5B4 /* DetailForecastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailForecastCell.swift; sourceTree = "<group>"; };
 		304513032B90E13F00AA7966 /* Weatherify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Weatherify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		304513062B90E13F00AA7966 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		304513082B90E13F00AA7966 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -123,6 +129,7 @@
 			children = (
 				3029A6E42B912B2B0040268D /* UITextField+Extension.swift */,
 				3029A6E62B912C230040268D /* UIViewController+Extension.swift */,
+				303A39952B927DEA0025F5B4 /* Double+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -202,6 +209,8 @@
 			children = (
 				304513442B90E34100AA7966 /* DetailViewController.swift */,
 				3029A6D42B90F6940040268D /* DetailViewModel.swift */,
+				303A39912B927B810025F5B4 /* DetailWeatherInformationView.swift */,
+				303A39972B928BF70025F5B4 /* DetailForecastCell.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -382,15 +391,18 @@
 			files = (
 				3029A6E72B912C230040268D /* UIViewController+Extension.swift in Sources */,
 				3029A6E52B912B2B0040268D /* UITextField+Extension.swift in Sources */,
+				303A39962B927DEA0025F5B4 /* Double+Extension.swift in Sources */,
 				304513072B90E13F00AA7966 /* AppDelegate.swift in Sources */,
 				304513092B90E13F00AA7966 /* SceneDelegate.swift in Sources */,
 				304513452B90E34100AA7966 /* DetailViewController.swift in Sources */,
 				3029A6DB2B90F6BC0040268D /* MainViewController.swift in Sources */,
 				304513492B90E34900AA7966 /* FavouriteViewController.swift in Sources */,
+				303A39922B927B810025F5B4 /* DetailWeatherInformationView.swift in Sources */,
 				3029A6DD2B90FA570040268D /* MainViewModel.swift in Sources */,
 				3029A6DF2B91066D0040268D /* ListWeatherCell.swift in Sources */,
 				3029A6D52B90F6940040268D /* DetailViewModel.swift in Sources */,
 				304513412B90E33800AA7966 /* ListViewController.swift in Sources */,
+				303A39982B928BF70025F5B4 /* DetailForecastCell.swift in Sources */,
 				3029A6D72B90F69B0040268D /* FavouriteViewModel.swift in Sources */,
 				3029A6D32B90F61B0040268D /* BaseViewModel.swift in Sources */,
 				3029A6CE2B90F3F70040268D /* BaseViewController.swift in Sources */,
