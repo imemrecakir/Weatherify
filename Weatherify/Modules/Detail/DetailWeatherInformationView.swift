@@ -55,9 +55,9 @@ final class DetailWeatherInformationView: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(name: String, iconName: String, value: String, suffix: String) {
+    func configure(name: String, iconName: String, value: String, unit: String) {
         informationNameLabel.text = name
         informationIcon.image = UIImage(systemName: iconName)
-        informationValueLabel.text = "\(value)\(suffix)"
+        informationValueLabel.text = "\(value)\(unit)"
     }
 }

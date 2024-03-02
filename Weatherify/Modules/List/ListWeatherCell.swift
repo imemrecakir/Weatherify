@@ -105,7 +105,7 @@ final class ListWeatherCell: UICollectionViewCell {
     
     func configureCell() {
         let temperature: Double = 22.7
-        temperatureLabel.attributedText = temperature.attributedTemperature(fontSize: temperatureLabel.font.pointSize)
+        temperatureLabel.text = temperature.formattedTemperature()
         weatherDescription.text = "Partly Cloudy"
         cityNameLabel.text = "İstanbul, Turkey"
         weatherIcon.image = UIImage(systemName: "cloud.sun")

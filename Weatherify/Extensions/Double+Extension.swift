@@ -8,18 +8,13 @@
 import UIKit
 
 extension Double {
-    func attributedTemperature(fontSize: CGFloat, suffix: String = "°C") -> NSMutableAttributedString {
-        let temperatureString = self.truncatingRemainder(dividingBy: 1) == 0 ? "\(Int(self))" : "\(self)"
-        let attributedTemperatureString = NSMutableAttributedString(string: temperatureString,
-                                                                    attributes: [.font: UIFont.systemFont(ofSize: fontSize)])
-        
-        let suffixFontSize = fontSize / 2
-        let baselineOffset = suffixFontSize - 2
-        attributedTemperatureString.append(NSMutableAttributedString(string: suffix,
-                                                                     attributes: [
-                                                                        .font: UIFont.systemFont(ofSize: suffixFontSize),
-                                                                        .baselineOffset: NSNumber(value: baselineOffset)
-                                                                     ]))
-        return attributedTemperatureString
+    func formattedTemperature(unit: UnitTemperature = .celsius) -> String {
+        let measurement = Measurement(value: self, unit: unit)
+        let measurementFormatter = MeasurementFormatter()
+        measurementFormatter.unitStyle = .short
+        measurementFormatter.numberFormatter.maximumFractionDigits = 1
+        measurementFormatter.numberFormatter.decimalSeparator = "."
+        measurementFormatter.unitOptions = .temperatureWithoutUnit
+        return measurementFormatter.string(from: measurement)
     }
 }

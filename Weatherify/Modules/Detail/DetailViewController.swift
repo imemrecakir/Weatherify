@@ -140,6 +140,9 @@ extension DetailViewController {
         temperatureLabel.attributedText = temperature.attributedTemperature(fontSize: temperatureLabel.font.pointSize)
         humidityView.configure(name: "Humidity", iconName: "drop.halffull", value: "50", suffix: "%")
         windView.configure(name: "Wind speed", iconName: "wind", value: "7", suffix: " km/h")
+        temperatureLabel.text = temperature.formattedTemperature()
+        humidityView.configure(name: "Humidity", iconName: "drop.halffull", value: "50", unit: "%")
+        windView.configure(name: "Wind speed", iconName: "wind", value: "7", unit: " km/h")
         DispatchQueue.main.async { [weak self] in
             self?.forecastCollectionView.reloadData()
         }

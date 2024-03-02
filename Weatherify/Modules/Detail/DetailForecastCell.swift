@@ -67,13 +67,10 @@ final class DetailForecastCell: UICollectionViewCell {
     }
     
     func configureCell(day: String, iconName: String, temperature: Double, isSelected: Bool) {
-//        contentStackView.backgroundColor = isSelected ? .secondaryLabel : .secondarySystemBackground
-        
         contentStackView.layer.borderColor = (isSelected ? UIColor.label : UIColor.clear).cgColor
         
         contentStackView.backgroundColor = isSelected ? .systemFill : .secondarySystemBackground
-        
-//        let cellTintColor: UIColor = isSelected ? .systemBackground : .label
+
         let cellTintColor: UIColor = isSelected ? .label : .secondaryLabel
         
         forecastDayLabel.text = day
@@ -82,7 +79,7 @@ final class DetailForecastCell: UICollectionViewCell {
         forecastWeatherIcon.image = UIImage(systemName: iconName)
         forecastWeatherIcon.tintColor = cellTintColor
         
-        forecastTemperatureLabel.attributedText = temperature.attributedTemperature(fontSize: forecastTemperatureLabel.font.pointSize)
+        forecastTemperatureLabel.text = temperature.formattedTemperature()
         forecastTemperatureLabel.textColor = cellTintColor
     }
 }
