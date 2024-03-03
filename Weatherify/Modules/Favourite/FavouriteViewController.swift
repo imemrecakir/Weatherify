@@ -14,6 +14,8 @@ final class FavouriteViewController: BaseViewController {
     private var countries = ["Germany", "Spaint", "Turkey", "USA", "England"]
     private var temperatures = [22, 23.4, 29.14, 18, 16]
     
+    let viewModel: FavouriteViewModel
+    
     private lazy var removeAllFavouritesBarButtonItem: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -35,22 +37,20 @@ final class FavouriteViewController: BaseViewController {
         return collectionView
     }()
     
-    private lazy var emptyMessageLabel: UILabel = {
-        let label = UILabel()
-        label.text = "There is no favourite yet"
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        label.font = .monospacedSystemFont(ofSize: 18, weight: .medium)
-        label.center = favouritesCollectionView.center
-        label.sizeToFit()
-        return label
-    }()
-    
     private func reloadData() {
         removeAllFavouritesBarButtonItem.isEnabled = !cities.isEmpty
         DispatchQueue.main.async { [weak self] in
             self?.favouritesCollectionView.reloadData()
         }
+    }
+    
+    init(viewModel: FavouriteViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     @objc private func removeAllFavouritesBarButtonItemTapped() {
@@ -90,7 +90,7 @@ extension FavouriteViewController {
 extension FavouriteViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if cities.isEmpty {
-            collectionView.backgroundView = emptyMessageLabel
+            collectionView.addEmptyView(message: viewModel.emptyMessage)
         } else {
             collectionView.backgroundView = nil
         }

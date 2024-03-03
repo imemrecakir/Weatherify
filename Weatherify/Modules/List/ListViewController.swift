@@ -38,18 +38,7 @@ final class ListViewController: BaseViewController {
         collectionView.register(ListWeatherCell.self, forCellWithReuseIdentifier: ListWeatherCell.reuseIdentifier)
         return collectionView
     }()
-    
-    private lazy var emptyMessageLabel: UILabel = {
-        let label = UILabel()
-        label.text = "The city was not found"
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        label.font = .monospacedSystemFont(ofSize: 18, weight: .medium)
-        label.center = collectionView.center
-        label.sizeToFit()
-        return label
-    }()
-    
+
     init(viewModel: ListViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -115,7 +104,7 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if viewModel.displayedWeathers.isEmpty {
-            collectionView.backgroundView = emptyMessageLabel
+            collectionView.addEmptyView(message: viewModel.emptyMessage)
         } else {
             collectionView.backgroundView = nil
         }

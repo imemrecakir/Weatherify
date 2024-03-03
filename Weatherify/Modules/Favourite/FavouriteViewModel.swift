@@ -7,4 +7,6 @@
 
 import Foundation
 
-final class FavouriteViewModel: BaseViewModel {}
+final class FavouriteViewModel: BaseViewModel {
+    let emptyMessage = "There is no favourite yet"
+}

@@ -17,6 +17,8 @@ final class ListViewModel: BaseViewModel {
     
     var displayedWeathers: [WeatherModel] = []
     
+    let emptyMessage = "The city was not found"
+    
     var weathers: [WeatherModel] = [] {
         didSet {
             if searchedWeathers.isEmpty {
