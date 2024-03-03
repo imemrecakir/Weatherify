@@ -116,6 +116,14 @@ extension ListViewController: UISearchBarDelegate {
         searchBar.resignFirstResponder()
     }
     
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        searchBar.text = nil
+        searchBar.endEditing(true)
+        searchBar.showsCancelButton = false
+        viewModel.searchWeathers(query: "")
+    }
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel.searchWeathers(query: searchBar.text ?? "")
     }
