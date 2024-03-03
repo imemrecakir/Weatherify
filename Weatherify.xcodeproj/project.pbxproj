@@ -36,6 +36,7 @@
 		30620DFD2B93649700F42D15 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30620DFC2B93649700F42D15 /* Endpoint.swift */; };
 		3078F3B72B93764200B5F5F0 /* ListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3078F3B62B93764200B5F5F0 /* ListRouter.swift */; };
 		3078F3B92B9376A300B5F5F0 /* BaseRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3078F3B82B9376A300B5F5F0 /* BaseRouter.swift */; };
+		3078F3BB2B946FE800B5F5F0 /* DetailRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3078F3BA2B946FE800B5F5F0 /* DetailRouter.swift */; };
 		30F3E37E2B92D0EE007DEC23 /* FavouriteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F3E37D2B92D0EE007DEC23 /* FavouriteCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -90,6 +91,7 @@
 		30620DFC2B93649700F42D15 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		3078F3B62B93764200B5F5F0 /* ListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRouter.swift; sourceTree = "<group>"; };
 		3078F3B82B9376A300B5F5F0 /* BaseRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRouter.swift; sourceTree = "<group>"; };
+		3078F3BA2B946FE800B5F5F0 /* DetailRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRouter.swift; sourceTree = "<group>"; };
 		30F3E37D2B92D0EE007DEC23 /* FavouriteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -226,6 +228,7 @@
 				3029A6D42B90F6940040268D /* DetailViewModel.swift */,
 				303A39912B927B810025F5B4 /* DetailWeatherInformationView.swift */,
 				303A39972B928BF70025F5B4 /* DetailForecastCell.swift */,
+				3078F3BA2B946FE800B5F5F0 /* DetailRouter.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -434,6 +437,7 @@
 				30620DFB2B935A6E00F42D15 /* NetworkManager.swift in Sources */,
 				3029A6E72B912C230040268D /* UIViewController+Extension.swift in Sources */,
 				3078F3B72B93764200B5F5F0 /* ListRouter.swift in Sources */,
+				3078F3BB2B946FE800B5F5F0 /* DetailRouter.swift in Sources */,
 				303A39962B927DEA0025F5B4 /* Double+Extension.swift in Sources */,
 				304513072B90E13F00AA7966 /* AppDelegate.swift in Sources */,
 				30620DF92B935A6700F42D15 /* NetworkHelper.swift in Sources */,

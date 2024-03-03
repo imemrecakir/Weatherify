@@ -9,6 +9,8 @@ import UIKit
 
 final class DetailViewController: BaseViewController {
     
+    let viewModel: DetailViewModel
+    
     private lazy var selectedForecastIndex = 0 {
         didSet {
             configureViews()
@@ -16,8 +18,13 @@ final class DetailViewController: BaseViewController {
     }
     
     private lazy var favouriteBarButtonItem: UIButton = {
+        var configuration = UIButton.Configuration.tinted()
+        configuration.imagePadding = 8
         let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.configuration = configuration
+        button.configuration?.baseBackgroundColor = .clear
+        button.imageView?.backgroundColor = .clear
         button.setImage(UIImage(systemName: "bookmark"), for: .normal)
         button.addTarget(self, action: #selector(favouriteBarButtonItemTapped), for: .touchUpInside)
         return button
@@ -94,6 +101,15 @@ final class DetailViewController: BaseViewController {
         return collectionView
     }()
     
+    init(viewModel: DetailViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     @objc private func favouriteBarButtonItemTapped() {
         //TODO: add to favourite list
         print("favourite button tapped")
@@ -102,7 +118,6 @@ final class DetailViewController: BaseViewController {
 
 extension DetailViewController {
     func setupUI() {
-        title = "Istanbul, Turkey"
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: favouriteBarButtonItem)
         
         view.addSubview(weatherDescriptionLabel)
@@ -131,28 +146,32 @@ extension DetailViewController {
     }
     
     func configureViews() {
-        weatherIcon.image = UIImage(systemName: "cloud.sun")
-        weatherDescriptionLabel.text = "Partly cloudy"
-        let temperature: Double = 22
-        temperatureLabel.text = temperature.formattedTemperature()
-        humidityView.configure(name: "Humidity", iconName: "drop.halffull", value: "50", unit: "%")
-        windView.configure(name: "Wind speed", iconName: "wind", value: "7", unit: " km/h")
+        title = "\(viewModel.weather.city), \(viewModel.weather.country)"
+        favouriteBarButtonItem.setImage(UIImage(systemName: viewModel.weather.isFavourite ? "bookmark.fill" : "bookmark"), for: .normal)
+        let forecast = viewModel.forecasts[selectedForecastIndex]
+        weatherIcon.image = UIImage(systemName: forecast.weatherDescription.iconName)
+        weatherDescriptionLabel.text = forecast.weatherDescription.rawValue
+        temperatureLabel.text = forecast.temperature.formattedTemperature()
+        humidityView.configure(name: "Humidity", iconName: "drop.halffull", value: forecast.humidity, unit: "%")
+        windView.configure(name: "Wind speed", iconName: "wind", value: forecast.windSpeed, unit: " km/h")
         DispatchQueue.main.async { [weak self] in
             self?.forecastCollectionView.reloadData()
         }
     }
 }
 
+extension DetailViewController: DetailViewModelDelegate {
+    func favouriteUpdated() {}
+}
+
 extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return viewModel.forecasts.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailForecastCell.reuseIdentifier, for: indexPath) as? DetailForecastCell {
-            cell.configureCell(day: "Day \(indexPath.item)",
-                               iconName: "sun.max.fill",
-                               temperature: 22 + Double(indexPath.item),
+            cell.configureCell(forecast: viewModel.forecasts[indexPath.item],
                                isSelected: selectedForecastIndex == indexPath.item)
             return cell
         }

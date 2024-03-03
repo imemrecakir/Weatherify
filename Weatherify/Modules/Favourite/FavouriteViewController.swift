@@ -123,9 +123,9 @@ extension FavouriteViewController: UICollectionViewDelegate, UICollectionViewDat
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let detailViewController = DetailViewController()
-        detailViewController.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(detailViewController, animated: true)
+//        let detailViewController = DetailViewController()
+//        detailViewController.hidesBottomBarWhenPushed = true
+//        navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
 

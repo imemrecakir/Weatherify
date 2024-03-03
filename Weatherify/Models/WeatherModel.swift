@@ -31,7 +31,7 @@ struct WeatherModel: Codable {
 
 struct Forecast: Codable {
     let date: String
-    let temperature: Int
+    let temperature: Double
     let weatherDescription: WeatherDescription
     let humidity: Double
     let windSpeed: Double

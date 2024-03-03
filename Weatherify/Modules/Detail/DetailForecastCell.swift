@@ -66,20 +66,20 @@ final class DetailForecastCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureCell(day: String, iconName: String, temperature: Double, isSelected: Bool) {
+    func configureCell(forecast: Forecast, isSelected: Bool) {
         contentStackView.layer.borderColor = (isSelected ? UIColor.label : UIColor.clear).cgColor
         
         contentStackView.backgroundColor = isSelected ? .systemFill : .secondarySystemBackground
 
         let cellTintColor: UIColor = isSelected ? .label : .secondaryLabel
         
-        forecastDayLabel.text = day
+        forecastDayLabel.text = forecast.date
         forecastDayLabel.textColor = cellTintColor
         
-        forecastWeatherIcon.image = UIImage(systemName: iconName)
+        forecastWeatherIcon.image = UIImage(systemName: forecast.weatherDescription.iconName)
         forecastWeatherIcon.tintColor = cellTintColor
         
-        forecastTemperatureLabel.text = temperature.formattedTemperature()
+        forecastTemperatureLabel.text = forecast.temperature.formattedTemperature()
         forecastTemperatureLabel.textColor = cellTintColor
     }
 }
