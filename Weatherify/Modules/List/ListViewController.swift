@@ -20,7 +20,6 @@ final class ListViewController: BaseViewController {
         searchBar.searchTextField.backgroundColor = .systemFill
         searchBar.backgroundImage = UIImage()
         searchBar.setImage(UIImage(systemName: "magnifyingglass"), for: .search, state: .normal)
-        searchBar.searchTextField.addCloseToolbar()
         searchBar.returnKeyType = .done
         searchBar.delegate = self
         return searchBar

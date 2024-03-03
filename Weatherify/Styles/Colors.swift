@@ -19,8 +19,6 @@ struct Colors {
     
     static let humidity = UIColor(red: 0, green: 191, blue: 255)
     static let windSpeed = UIColor(red: 0, green: 128, blue: 0)
-    
-    static let mapPin = UIColor(red: 255, green: 0, blue: 0)
 
     static func getWeatherColor(for weather: WeatherDescription) -> UIColor {
         switch weather {
