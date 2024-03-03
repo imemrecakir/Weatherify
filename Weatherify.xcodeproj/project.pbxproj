@@ -45,7 +45,6 @@
 		3078F3BD2B9480D200B5F5F0 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3078F3BC2B9480D200B5F5F0 /* UIColor+Extension.swift */; };
 		3078F3C02B94832900B5F5F0 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3078F3BF2B94832900B5F5F0 /* Colors.swift */; };
 		309355DF2B94A90800DDE814 /* UINavigationBar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309355DE2B94A90800DDE814 /* UINavigationBar+Extension.swift */; };
-		309355E12B94AEBF00DDE814 /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309355E02B94AEBF00DDE814 /* UITextField+Extension.swift */; };
 		309355E32B94C2DD00DDE814 /* UICollectionView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309355E22B94C2DD00DDE814 /* UICollectionView+Extension.swift */; };
 		30F3E37E2B92D0EE007DEC23 /* FavouriteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30F3E37D2B92D0EE007DEC23 /* FavouriteCell.swift */; };
 /* End PBXBuildFile section */
@@ -110,7 +109,6 @@
 		3078F3BC2B9480D200B5F5F0 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		3078F3BF2B94832900B5F5F0 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		309355DE2B94A90800DDE814 /* UINavigationBar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationBar+Extension.swift"; sourceTree = "<group>"; };
-		309355E02B94AEBF00DDE814 /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
 		309355E22B94C2DD00DDE814 /* UICollectionView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extension.swift"; sourceTree = "<group>"; };
 		30F3E37D2B92D0EE007DEC23 /* FavouriteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -166,7 +164,6 @@
 				303A39952B927DEA0025F5B4 /* Double+Extension.swift */,
 				3078F3BC2B9480D200B5F5F0 /* UIColor+Extension.swift */,
 				309355DE2B94A90800DDE814 /* UINavigationBar+Extension.swift */,
-				309355E02B94AEBF00DDE814 /* UITextField+Extension.swift */,
 				309355E22B94C2DD00DDE814 /* UICollectionView+Extension.swift */,
 			);
 			path = Extensions;
@@ -499,7 +496,6 @@
 				304513492B90E34900AA7966 /* FavouriteViewController.swift in Sources */,
 				309355DF2B94A90800DDE814 /* UINavigationBar+Extension.swift in Sources */,
 				30620DFD2B93649700F42D15 /* Endpoint.swift in Sources */,
-				309355E12B94AEBF00DDE814 /* UITextField+Extension.swift in Sources */,
 				303A39922B927B810025F5B4 /* DetailWeatherInformationView.swift in Sources */,
 				3029A6DD2B90FA570040268D /* MainViewModel.swift in Sources */,
 				30620DF52B934B8900F42D15 /* WeatherModel.swift in Sources */,
