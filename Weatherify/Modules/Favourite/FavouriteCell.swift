@@ -34,7 +34,7 @@ final class FavouriteCell: UICollectionViewCell {
     }()
     
     private lazy var contentStackView: UIStackView = {
-       let stackView = UIStackView(arrangedSubviews: [cityNameLabel, countryNameLabel, temperatureLabel])
+       let stackView = UIStackView(arrangedSubviews: [cityNameLabel, countryNameLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.spacing = 8
@@ -55,14 +55,6 @@ final class FavouriteCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .secondaryLabel
-        label.font = .monospacedSystemFont(ofSize: 12, weight: .regular)
-        label.setContentHuggingPriority(.required, for: .vertical)
-        return label
-    }()
-    
-    private lazy var temperatureLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .label
         label.font = .monospacedSystemFont(ofSize: 12, weight: .regular)
         label.setContentHuggingPriority(.required, for: .vertical)
         return label
@@ -99,10 +91,9 @@ final class FavouriteCell: UICollectionViewCell {
         ])
     }
     
-    func configureCell(city: String, country: String, temperature: Double, index: Int) {
-        cityNameLabel.text = city
-        countryNameLabel.text = country
-        temperatureLabel.text = temperature.formattedTemperature()
+    func configureCell(favourite: Favourite, index: Int) {
+        cityNameLabel.text = favourite.city
+        countryNameLabel.text = favourite.country
         self.index = index
     }
     

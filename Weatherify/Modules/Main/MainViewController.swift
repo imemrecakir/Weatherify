@@ -31,7 +31,7 @@ final class MainViewController: UITabBarController {
             setupViewController(with: ListRouter().initialViewController,
                                 title: "Weatherify",
                                 imageName: "house"),
-            setupViewController(with: FavouriteViewController(viewModel: FavouriteViewModel()),
+            setupViewController(with: FavouriteRouter().initialViewController,
                                 title: "Favourites",
                                 imageName: "bookmark")
         ]

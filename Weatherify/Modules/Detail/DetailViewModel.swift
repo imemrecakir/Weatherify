@@ -45,7 +45,8 @@ final class DetailViewModel: BaseViewModel {
         super.init()
         if let weather {
             self.weather = weather
-            self.configureForecasts()
+            checkIsFavourite()
+            configureForecasts()
         } else if let weatherId {
             fetchWeather(with: weatherId)
         }
@@ -65,21 +66,109 @@ final class DetailViewModel: BaseViewModel {
             switch result {
             case .success(let weather):
                 self?.weather = weather
-                self?.configureForecasts()
+                self?.isLoading = false
                 self?.errorMessage = nil
+                DispatchQueue.main.async {
+                    self?.checkIsFavourite()
+                    self?.configureForecasts()
+                }
             case .failure(let error):
+                self?.isLoading = false
                 self?.errorMessage = error.errorMessage
             }
-            
-            self?.isLoading = false
         }
     }
     
-    private func updateFavourite() {
-        if let weather, weather.isFavourite {
-            //TODO: Remove from favourites
+    private func checkIsFavourite() {
+        isLoading = true
+        if let weather {
+            let predicate = NSPredicate(format: "id == \(weather.id)")
+            DatabaseManager.shared.fetchEntity(object: Favourite.self, entity: .favourite, predicate: predicate) { [weak self] result in
+                switch result {
+                case .success(let favourites):
+                    self?.weather?.isFavourite = !favourites.isEmpty
+                case .failure(let failure):
+                    self?.errorMessage = failure.errorMessage
+                }
+                
+                self?.isLoading = false
+                DispatchQueue.main.async {
+                    self?.delegate?.favouriteUpdated()
+                }
+            }
+        }
+    }
+    
+    func updateFavourite() {
+        if let weather {
+            isLoading = true
+            if weather.isFavourite {
+                getFavouriteById { [weak self] result in
+                    switch result {
+                    case .success(let favourite):
+                        DatabaseManager.shared.deleteObject(object: favourite) { result in
+                            switch result {
+                            case .success:
+                                self?.checkIsFavourite()
+                            case .failure(let failure):
+                                self?.errorMessage = failure.errorMessage
+                                self?.isLoading = false
+                                DispatchQueue.main.async {
+                                    self?.delegate?.favouriteUpdated()
+                                }
+                            }
+                            
+                            self?.isLoading = false
+                        }
+                    case .failure(let failure):
+                        self?.errorMessage = failure.errorMessage
+                        self?.isLoading = false
+                        DispatchQueue.main.async {
+                            self?.delegate?.favouriteUpdated()
+                        }
+                    }
+                }
+            } else {
+                let favourite = Favourite(context: DatabaseManager.shared.context)
+                favourite.id = Int64(weather.id)
+                favourite.city = weather.city
+                favourite.country = weather.country
+                favourite.addedDate = Date.now
+                
+                DatabaseManager.shared.saveObject(object: favourite) { [weak self] result in
+                    switch result {
+                    case .success:
+                        self?.weather?.isFavourite = true
+                    case .failure(let failure):
+                        self?.errorMessage = failure.errorMessage
+                    }
+                    
+                    self?.isLoading = false
+                    DispatchQueue.main.async {
+                        self?.delegate?.favouriteUpdated()
+                    }
+                }
+            }
+        }
+    }
+    
+    private func getFavouriteById(completion: @escaping (Result<Favourite, DatabaseError>) -> Void) {
+        if let weather {
+            let predicate = NSPredicate(format: "id == \(weather.id)")
+            DatabaseManager.shared.fetchEntity(object: Favourite.self, entity: .favourite, predicate: predicate) { result in
+                switch result {
+                case .success(let favourites):
+                    if let favourite = favourites.first {
+                        completion(.success(favourite))
+                    } else {
+                        completion(.failure(.fetchingError))
+                    }
+                case .failure(let failure):
+                    completion(.failure(failure))
+                }
+            }
         } else {
-            //TODO: Add to favourites
+            completion(.failure(.fetchingError))
         }
     }
     

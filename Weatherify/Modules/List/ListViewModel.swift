@@ -15,21 +15,17 @@ protocol ListViewModelDelegate: AnyObject {
 
 final class ListViewModel: BaseViewModel {
     
+    weak var delegate: ListViewModelDelegate?
+    
+    let router: ListRouter
+    
     var displayedWeathers: [WeatherModel] = []
     
     let emptyMessage = "The city was not found"
     
     var weathers: [WeatherModel] = [] {
         didSet {
-            if searchedWeathers.isEmpty {
                 displayedWeathers = weathers
-            }
-        }
-    }
-    
-    var searchedWeathers: [WeatherModel] = [] {
-        didSet {
-            displayedWeathers = searchedWeathers
         }
     }
 
@@ -41,25 +37,23 @@ final class ListViewModel: BaseViewModel {
     
     var isSearching = false
     
-    var paginationLimit = 0
+    var paginationLimit = 10
     var isPaginationReachedEndLimit = false
-    
-    weak var delegate: ListViewModelDelegate?
-    
-    override init() {
+
+    init(router: ListRouter) {
+        self.router = router
         super.init()
-        fetchWeathers()
     }
     
     func fetchWeathers() {
-        if !isPaginationReachedEndLimit && !isLoading {
+        if !isPaginationReachedEndLimit && !isLoading && !isSearching {
             isLoading = true
             errorMessage = nil
-            paginationLimit += 10
             
             NetworkManager.shared.request(type: [WeatherModel].self, endpoint: .getWeathers(limit: paginationLimit), httpMethod: .get) { [weak self] result in
                 switch result {
                 case .success(let weathers):
+                    self?.paginationLimit += 10
                     if weathers.count % 10 != 0 {
                         self?.isPaginationReachedEndLimit = true
                     }
@@ -90,5 +84,10 @@ final class ListViewModel: BaseViewModel {
             
             delegate?.weathersSearched()
         }
+    }
+    
+    func navigateToDetail(index: Int) {
+        let weather = displayedWeathers[index]
+        router.navigateToDetail(router: DetailRouter(weather: weather))
     }
 }

@@ -17,11 +17,10 @@ final class ListViewController: BaseViewController {
         searchBar.backgroundColor = .clear
         searchBar.placeholder = "Search City"
         searchBar.searchTextField.font = .systemFont(ofSize: 14, weight: .semibold)
-        searchBar.tintColor = .label
         searchBar.searchTextField.backgroundColor = .systemFill
         searchBar.backgroundImage = UIImage()
         searchBar.setImage(UIImage(systemName: "magnifyingglass"), for: .search, state: .normal)
-        searchBar.searchTextField.addCloseToolbar()
+//        searchBar.searchTextField.addCloseToolbar()
         searchBar.returnKeyType = .done
         searchBar.delegate = self
         return searchBar
@@ -33,6 +32,7 @@ final class ListViewController: BaseViewController {
         collectionView.backgroundColor = .clear
         collectionView.showsVerticalScrollIndicator = false
         collectionView.contentInset = .init(top: 12, left: 0, bottom: 12, right: 0)
+        collectionView.keyboardDismissMode = .onDrag
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(ListWeatherCell.self, forCellWithReuseIdentifier: ListWeatherCell.reuseIdentifier)
@@ -59,6 +59,8 @@ extension ListViewController {
     func setupUI() {
         view.addSubview(searchBar)
         view.addSubview(collectionView)
+        
+        viewModel.fetchWeathers()
     }
     
     func setupConstraints() {
@@ -70,7 +72,7 @@ extension ListViewController {
             
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor)
         ])
     }
 }
@@ -81,15 +83,35 @@ extension ListViewController: ListViewModelDelegate {
     }
     
     func weathersFetched() {
-        reloadCollectionView()
+        if let errorMessage = viewModel.errorMessage {
+            showAlert(title: "Error", message: errorMessage, style: .alert)
+        } else {
+            reloadCollectionView()
+        }
+        
+        viewModel.displayedWeathers.forEach {
+            print("ID - \($0.id) - ")
+        }
+        
+        print("\n\n")
     }
     
     func weathersSearched() {
-        reloadCollectionView()
+        if let errorMessage = viewModel.errorMessage {
+            showAlert(title: "Error", message: errorMessage, style: .alert)
+        } else {
+            reloadCollectionView()
+        }
     }
 }
 
 extension ListViewController: UISearchBarDelegate {
+    
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        viewModel.isSearching = true
+        searchBar.showsCancelButton = true
+        return true
+    }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
@@ -98,12 +120,24 @@ extension ListViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel.searchWeathers(query: searchBar.text ?? "")
     }
+    
+    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
+        if let searchText = searchBar.text {
+            viewModel.isSearching = !searchText.isEmpty
+            searchBar.showsCancelButton = !searchText.isEmpty
+        } else {
+            viewModel.isSearching = false
+            searchBar.showsCancelButton = false
+        }
+        
+        return true
+    }
 }
 
 extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if viewModel.displayedWeathers.isEmpty {
+        if viewModel.displayedWeathers.isEmpty && !viewModel.isLoading {
             collectionView.addEmptyView(message: viewModel.emptyMessage)
         } else {
             collectionView.backgroundView = nil
@@ -132,22 +166,26 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
         return 16
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let detailViewController = DetailRouter(weather: viewModel.weathers[indexPath.item]).initialViewController {
-            navigationController?.pushViewController(detailViewController, animated: true)
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.item == viewModel.displayedWeathers.count - 1 {
+            viewModel.fetchWeathers()
         }
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.navigateToDetail(index: indexPath.item)
+    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let offsetY = scrollView.contentOffset.y
-        let contentHeight = scrollView.contentSize.height
-        let screenHeight = scrollView.frame.height
-        
-        let threshold: CGFloat = 100
-        let lastItemIndex = collectionView.numberOfItems(inSection: 0) - 1
- 
-        if offsetY + screenHeight + threshold >= contentHeight && lastItemIndex >= 0 {
-            viewModel.fetchWeathers()
-        }
+//        let offsetY = scrollView.contentOffset.y
+//        let contentHeight = scrollView.contentSize.height
+//        let screenHeight = scrollView.frame.height
+//        
+//        let threshold: CGFloat = 0
+//        let lastItemIndex = collectionView.numberOfItems(inSection: 0) - 1
+// 
+//        if offsetY + screenHeight + threshold >= contentHeight && lastItemIndex >= 0 {
+//            viewModel.fetchWeathers()
+//        }
     }
 }

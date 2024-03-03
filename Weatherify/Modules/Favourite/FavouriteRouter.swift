@@ -1,18 +1,18 @@
 //
-//  ListRouter.swift
+//  FavouriteRouter.swift
 //  Weatherify
 //
-//  Created by Emre Çakır on 2.03.2024.
+//  Created by Emre Çakır on 3.03.2024.
 //
 
 import Foundation
 
-final class ListRouter: BaseRouter {
+final class FavouriteRouter: BaseRouter {
     
     override init() {
         super.init()
-        let viewModel = ListViewModel(router: self)
-        let viewController = ListViewController(viewModel: viewModel)
+        let viewModel = FavouriteViewModel(router: self)
+        let viewController = FavouriteViewController(viewModel: viewModel)
         viewModel.delegate = viewController
         initialViewController = viewController
     }

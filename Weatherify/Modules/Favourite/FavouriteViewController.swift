@@ -9,18 +9,12 @@ import UIKit
 
 final class FavouriteViewController: BaseViewController {
     
-    private var ids = [1, 2, 3, 4, 5]
-    private var cities = ["Berlin", "Madrid", "İstanbul", "New York", "Londra"]
-    private var countries = ["Germany", "Spaint", "Turkey", "USA", "England"]
-    private var temperatures = [22, 23.4, 29.14, 18, 16]
-    
     let viewModel: FavouriteViewModel
     
     private lazy var removeAllFavouritesBarButtonItem: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(systemName: "trash.slash.fill"), for: .normal)
-        button.isEnabled = !cities.isEmpty
         button.addTarget(self, action: #selector(removeAllFavouritesBarButtonItemTapped), for: .touchUpInside)
         return button
     }()
@@ -38,9 +32,9 @@ final class FavouriteViewController: BaseViewController {
     }()
     
     private func reloadData() {
-        removeAllFavouritesBarButtonItem.isEnabled = !cities.isEmpty
+        removeAllFavouritesBarButtonItem.isEnabled = !viewModel.favourites.isEmpty
         DispatchQueue.main.async { [weak self] in
-            self?.favouritesCollectionView.reloadData()
+            self?.favouritesCollectionView.reloadSections(IndexSet(integer: 0))
         }
     }
     
@@ -53,21 +47,15 @@ final class FavouriteViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.fetchAllFavourites()
+    }
+    
     @objc private func removeAllFavouritesBarButtonItemTapped() {
-        let alertController = UIAlertController(title: "Are you sure?", message: "You are deleting all favourites", preferredStyle: .alert)
-
-        alertController.addAction(
-            UIAlertAction(title: "Yes", style: .destructive) { [weak self] _ in
-                self?.cities.removeAll()
-                self?.countries.removeAll()
-                self?.temperatures.removeAll()
-                self?.reloadData()
-            }
-        )
-        
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        
-        present(alertController, animated: true, completion: nil)
+        showAlertWithMultipleAction(title: "Are you sure?", message: "You are deleting all favourites", style: .actionSheet) { [weak self] in
+            self?.viewModel.removeAllFavourites()
+        }
     }
 }
 
@@ -75,6 +63,7 @@ extension FavouriteViewController {
     func setupUI() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: removeAllFavouritesBarButtonItem)
         view.addSubview(favouritesCollectionView)
+        reloadData()
     }
     
     func setupConstraints() {
@@ -87,20 +76,34 @@ extension FavouriteViewController {
     }
 }
 
+extension FavouriteViewController: FavouriteViewModelDelegate {
+    func isLoading(_ isLoading: Bool) {
+        showLoading(isLoading)
+    }
+    
+    func favouritesFetched() {
+        if let errorMessage = viewModel.errorMessage {
+            showAlert(title: "Error", message: errorMessage, style: .alert)
+        } else {
+            reloadData()
+        }
+    }
+}
+
 extension FavouriteViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if cities.isEmpty {
+        if viewModel.favourites.isEmpty && !viewModel.isLoading {
             collectionView.addEmptyView(message: viewModel.emptyMessage)
         } else {
             collectionView.backgroundView = nil
         }
         
-        return cities.count
+        return viewModel.favourites.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavouriteCell.reuseIdentifier, for: indexPath) as? FavouriteCell {
-            cell.configureCell(city: cities[indexPath.item], country: cities[indexPath.item], temperature: temperatures[indexPath.item], index: indexPath.item)
+            cell.configureCell(favourite: viewModel.favourites[indexPath.item], index: indexPath.item)
             cell.delegate = self
             return cell
         }
@@ -124,17 +127,14 @@ extension FavouriteViewController: UICollectionViewDelegate, UICollectionViewDat
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let detailViewController = DetailRouter(weatherId: ids[indexPath.item]).initialViewController {
-            navigationController?.pushViewController(detailViewController, animated: true)
-        }
+        viewModel.navigateToDetail(index: indexPath.item)
     }
 }
 
 extension FavouriteViewController: FavouriteCellDelegate {
     func didRemoveTapped(index: Int) {
-        cities.remove(at: index)
-        countries.remove(at: index)
-        temperatures.remove(at: index)
-        reloadData()
+        showAlertWithMultipleAction(title: "Are you sure?", message: "You are deleting the favourite city", style: .actionSheet) { [weak self] in
+            self?.viewModel.deleteItemBy(index: index)
+        }
     }
 }

@@ -74,7 +74,6 @@ final class DetailViewController: BaseViewController {
     private lazy var humidityWindDivider: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .secondaryLabel
         return view
     }()
     
@@ -105,8 +104,7 @@ final class DetailViewController: BaseViewController {
     }
     
     @objc private func favouriteBarButtonItemTapped() {
-        //TODO: add to favourite list
-        print("favourite button tapped")
+        viewModel.updateFavourite()
     }
 }
 
@@ -140,6 +138,7 @@ extension DetailViewController {
     }
     
     func configureViews() {
+        showLoading(viewModel.isLoading)
         if let weather = viewModel.weather {
             title = "\(weather.city), \(weather.country)"
             navigationController?.navigationBar.adjustLargeTitle()
@@ -150,8 +149,12 @@ extension DetailViewController {
                 weatherDescriptionLabel.text = forecast.weatherDescription.rawValue
                 temperatureLabel.text = forecast.temperature.formattedTemperature()
                 humidityView.configure(type: .humidity, value: forecast.humidity)
+                humidityWindDivider.backgroundColor = .secondaryLabel
                 windView.configure(type: .windSpeed, value: forecast.windSpeed)
-                forecastCollectionView.reloadData()
+                
+                DispatchQueue.main.async { [weak self] in
+                    self?.forecastCollectionView.reloadData()
+                }
             }
         }
     }
@@ -163,10 +166,20 @@ extension DetailViewController: DetailViewModelDelegate {
     }
     
     func weatherUpdated() {
-        configureViews()
+        if let errorMessage = viewModel.errorMessage {
+            showAlert(title: "Error", message: errorMessage, style: .alert)
+        } else {
+            configureViews()
+        }
     }
     
-    func favouriteUpdated() {}
+    func favouriteUpdated() {
+        if let errorMessage = viewModel.errorMessage {
+            showAlert(title: "Error", message: errorMessage, style: .alert)
+        } else if let weather = viewModel.weather {
+            favouriteBarButtonItem.setImage(UIImage(systemName: weather.isFavourite ? "bookmark.fill" : "bookmark"), for: .normal)
+        }
+    }
 }
 
 extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
