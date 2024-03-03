@@ -144,14 +144,12 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath.item)
-//        let detailViewController = DetailViewController()
-//        detailViewController.hidesBottomBarWhenPushed = true
-//        navigationController?.pushViewController(detailViewController, animated: true)
+        let detailViewController = DetailViewController()
+        detailViewController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(detailViewController, animated: true)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        // Check if the user has scrolled to the bottom of the collection view
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
         let screenHeight = scrollView.frame.height
@@ -160,9 +158,7 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let lastItemIndex = collectionView.numberOfItems(inSection: 0) - 1
  
         if offsetY + screenHeight + threshold >= contentHeight && lastItemIndex >= 0 {
-            if !viewModel.isPaginationReachedEndLimit && !viewModel.isLoading {
-                viewModel.fetchWeathers()
-            }
+            viewModel.fetchWeathers()
         }
     }
 }

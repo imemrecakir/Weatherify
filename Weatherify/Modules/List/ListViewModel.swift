@@ -44,26 +44,28 @@ final class ListViewModel: BaseViewModel {
     }
     
     func fetchWeathers() {
-        isLoading = true
-        delegate?.isLoading(true)
-        errorMessage = nil
-        paginationLimit += 10
-        
-        NetworkManager.shared.request(type: [WeatherModel].self, endpoint: .getWeathers(limit: paginationLimit), httpMethod: .get) { [weak self] result in
-            switch result {
-            case .success(let weathers):
-                if weathers.count % 10 != 0 {
-                    self?.isPaginationReachedEndLimit = true
-                }
-                self?.weathers = weathers
-                self?.errorMessage = nil
-            case .failure(let error):
-                self?.errorMessage = error.errorMessage
-            }
+        if !isPaginationReachedEndLimit && !isLoading {
+            isLoading = true
+            delegate?.isLoading(true)
+            errorMessage = nil
+            paginationLimit += 10
             
-            self?.isLoading = false
-            self?.delegate?.isLoading(false)
-            self?.delegate?.weathersFetched()
+            NetworkManager.shared.request(type: [WeatherModel].self, endpoint: .getWeathers(limit: paginationLimit), httpMethod: .get) { [weak self] result in
+                switch result {
+                case .success(let weathers):
+                    if weathers.count % 10 != 0 {
+                        self?.isPaginationReachedEndLimit = true
+                    }
+                    self?.weathers = weathers
+                    self?.errorMessage = nil
+                case .failure(let error):
+                    self?.errorMessage = error.errorMessage
+                }
+                
+                self?.isLoading = false
+                self?.delegate?.isLoading(false)
+                self?.delegate?.weathersFetched()
+            }
         }
     }
     
