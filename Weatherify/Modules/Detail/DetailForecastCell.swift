@@ -17,11 +17,11 @@ final class DetailForecastCell: UICollectionViewCell {
         stackView.backgroundColor = .secondarySystemFill
         stackView.axis = .vertical
         stackView.alignment = .center
-        stackView.spacing = 6
+        stackView.spacing = 12
         stackView.clipsToBounds = true
         stackView.layer.cornerRadius = 12
         stackView.layer.borderWidth = 1
-        stackView.layoutMargins = .init(top: 8, left: 16, bottom: 8, right: 16)
+        stackView.layoutMargins = .init(top: 12, left: 16, bottom: 12, right: 16)
         stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
     }()
@@ -37,8 +37,7 @@ final class DetailForecastCell: UICollectionViewCell {
     private lazy var forecastWeatherIcon: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = .label
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
@@ -71,13 +70,13 @@ final class DetailForecastCell: UICollectionViewCell {
         
         contentStackView.backgroundColor = isSelected ? .systemFill : .secondarySystemBackground
 
-        let cellTintColor: UIColor = isSelected ? .label : .secondaryLabel
+        let cellTintColor: UIColor = isSelected ? .label : .tertiaryLabel
         
-        forecastDayLabel.text = forecast.date
+        forecastDayLabel.text = forecast.dayOfDate
         forecastDayLabel.textColor = cellTintColor
         
         forecastWeatherIcon.image = UIImage(systemName: forecast.weatherDescription.iconName)
-        forecastWeatherIcon.tintColor = Colors.getWeatherColor(for: forecast.weatherDescription)
+        forecastWeatherIcon.tintColor = Colors.getWeatherColor(for: forecast.weatherDescription).withAlphaComponent(isSelected ? 1 : 0.25)
         
         forecastTemperatureLabel.text = forecast.temperature.formattedTemperature()
         forecastTemperatureLabel.textColor = cellTintColor

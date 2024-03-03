@@ -139,6 +139,11 @@ extension DetailViewController {
     
     func configureViews() {
         showLoading(viewModel.isLoading)
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.forecastCollectionView.reloadSections(IndexSet(integer: 0))
+        }
+        
         if let weather = viewModel.weather {
             title = "\(weather.city), \(weather.country)"
             navigationController?.navigationBar.adjustLargeTitle()
@@ -151,10 +156,6 @@ extension DetailViewController {
                 humidityView.configure(type: .humidity, value: forecast.humidity)
                 humidityWindDivider.backgroundColor = .secondaryLabel
                 windView.configure(type: .windSpeed, value: forecast.windSpeed)
-                
-                DispatchQueue.main.async { [weak self] in
-                    self?.forecastCollectionView.reloadData()
-                }
             }
         }
     }
@@ -215,6 +216,10 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        UIView.animate(withDuration: 0.5) { [weak self] in
+            self?.configureViews()
+        }
+
         viewModel.selectedForecastIndex = indexPath.item
     }
 }
