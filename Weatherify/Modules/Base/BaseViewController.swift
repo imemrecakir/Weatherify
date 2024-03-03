@@ -31,10 +31,11 @@ class BaseViewControllerClass: UIViewController {
         activityIndicator.color = .label
         return activityIndicator
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        overrideUserInterfaceStyle = .dark
         hideKeyboardWhenTappedAround()
         guard let controller = self as? BaseViewController else {
             return
