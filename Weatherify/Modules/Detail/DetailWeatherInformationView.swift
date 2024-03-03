@@ -7,6 +7,38 @@
 
 import UIKit
 
+enum WeatherInformationType: String {
+    case humidity = "Humidity"
+    case windSpeed = "Wind speed"
+    
+    var iconName: String {
+        switch self {
+        case .humidity:
+            return "drop.halffull"
+        case .windSpeed:
+            return "wind"
+        }
+    }
+    
+    var iconColor: String {
+        switch self {
+        case .humidity:
+            return "Humidity"
+        case .windSpeed:
+            return "Wind speed"
+        }
+    }
+    
+    var unit: String {
+        switch self {
+        case .humidity:
+            return "%"
+        case .windSpeed:
+            return " km/h"
+        }
+    }
+}
+
 final class DetailWeatherInformationView: UIStackView {
     
     private lazy var informationIconValueStackView: UIStackView = {
@@ -55,9 +87,10 @@ final class DetailWeatherInformationView: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(name: String, iconName: String, value: Double, unit: String) {
-        informationNameLabel.text = name
-        informationIcon.image = UIImage(systemName: iconName)
-        informationValueLabel.text = "\(value)\(unit)"
+    func configure(type: WeatherInformationType, value: Double) {
+        informationNameLabel.text = type.rawValue
+        informationIcon.image = UIImage(systemName: type.iconName)
+        informationIcon.tintColor = Colors.getWeatherInformationColor(for: type)
+        informationValueLabel.text = "\(value.formatted())\(type.unit)"
     }
 }

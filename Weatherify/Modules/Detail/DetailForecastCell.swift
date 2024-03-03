@@ -77,7 +77,7 @@ final class DetailForecastCell: UICollectionViewCell {
         forecastDayLabel.textColor = cellTintColor
         
         forecastWeatherIcon.image = UIImage(systemName: forecast.weatherDescription.iconName)
-        forecastWeatherIcon.tintColor = cellTintColor
+        forecastWeatherIcon.tintColor = Colors.getWeatherColor(for: forecast.weatherDescription)
         
         forecastTemperatureLabel.text = forecast.temperature.formattedTemperature()
         forecastTemperatureLabel.textColor = cellTintColor

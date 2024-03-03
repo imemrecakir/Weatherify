@@ -10,13 +10,7 @@ import UIKit
 final class DetailViewController: BaseViewController {
     
     let viewModel: DetailViewModel
-    
-    private lazy var selectedForecastIndex = 0 {
-        didSet {
-            configureViews()
-        }
-    }
-    
+   
     private lazy var favouriteBarButtonItem: UIButton = {
         var configuration = UIButton.Configuration.tinted()
         configuration.imagePadding = 8
@@ -146,21 +140,32 @@ extension DetailViewController {
     }
     
     func configureViews() {
-        title = "\(viewModel.weather.city), \(viewModel.weather.country)"
-        favouriteBarButtonItem.setImage(UIImage(systemName: viewModel.weather.isFavourite ? "bookmark.fill" : "bookmark"), for: .normal)
-        let forecast = viewModel.forecasts[selectedForecastIndex]
-        weatherIcon.image = UIImage(systemName: forecast.weatherDescription.iconName)
-        weatherDescriptionLabel.text = forecast.weatherDescription.rawValue
-        temperatureLabel.text = forecast.temperature.formattedTemperature()
-        humidityView.configure(name: "Humidity", iconName: "drop.halffull", value: forecast.humidity, unit: "%")
-        windView.configure(name: "Wind speed", iconName: "wind", value: forecast.windSpeed, unit: " km/h")
-        DispatchQueue.main.async { [weak self] in
-            self?.forecastCollectionView.reloadData()
+        if let weather = viewModel.weather {
+            title = "\(weather.city), \(weather.country)"
+            navigationController?.navigationBar.adjustLargeTitle()
+            favouriteBarButtonItem.setImage(UIImage(systemName: weather.isFavourite ? "bookmark.fill" : "bookmark"), for: .normal)
+            if let forecast = viewModel.selectedForecast {
+                weatherIcon.image = UIImage(systemName: forecast.weatherDescription.iconName)
+                weatherIcon.tintColor = Colors.getWeatherColor(for: forecast.weatherDescription)
+                weatherDescriptionLabel.text = forecast.weatherDescription.rawValue
+                temperatureLabel.text = forecast.temperature.formattedTemperature()
+                humidityView.configure(type: .humidity, value: forecast.humidity)
+                windView.configure(type: .windSpeed, value: forecast.windSpeed)
+                forecastCollectionView.reloadData()
+            }
         }
     }
 }
 
 extension DetailViewController: DetailViewModelDelegate {
+    func isLoading(_ isLoading: Bool) {
+        showLoading(isLoading)
+    }
+    
+    func weatherUpdated() {
+        configureViews()
+    }
+    
     func favouriteUpdated() {}
 }
 
@@ -172,7 +177,7 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailForecastCell.reuseIdentifier, for: indexPath) as? DetailForecastCell {
             cell.configureCell(forecast: viewModel.forecasts[indexPath.item],
-                               isSelected: selectedForecastIndex == indexPath.item)
+                               isSelected: viewModel.selectedForecastIndex == indexPath.item)
             return cell
         }
         
@@ -197,6 +202,6 @@ extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectedForecastIndex = indexPath.item
+        viewModel.selectedForecastIndex = indexPath.item
     }
 }

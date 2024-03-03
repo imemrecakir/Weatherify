@@ -8,12 +8,12 @@
 import Foundation
 
 enum Endpoint {
-    case getAllWeathers
+    case getWeather(id: Int)
     case getWeathers(limit: Int)
     
     private var queryItems: [URLQueryItem]? {
         switch self {
-        case .getAllWeathers:
+        case .getWeather:
             return nil
         case .getWeathers(let limit):
             return [URLQueryItem(name: "limit", value: "\(limit)")]
@@ -22,7 +22,9 @@ enum Endpoint {
     
     private var path: String {
         switch self {
-        case .getAllWeathers, .getWeathers:
+        case .getWeather(let id):
+            return "weathers/\(id)"
+        case .getWeathers:
             return "weathers"
         }
     }

@@ -9,6 +9,7 @@ import UIKit
 
 final class FavouriteViewController: BaseViewController {
     
+    private var ids = [1, 2, 3, 4, 5]
     private var cities = ["Berlin", "Madrid", "İstanbul", "New York", "Londra"]
     private var countries = ["Germany", "Spaint", "Turkey", "USA", "England"]
     private var temperatures = [22, 23.4, 29.14, 18, 16]
@@ -123,9 +124,9 @@ extension FavouriteViewController: UICollectionViewDelegate, UICollectionViewDat
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let detailViewController = DetailViewController()
-//        detailViewController.hidesBottomBarWhenPushed = true
-//        navigationController?.pushViewController(detailViewController, animated: true)
+        if let detailViewController = DetailRouter(weatherId: ids[indexPath.item]).initialViewController {
+            navigationController?.pushViewController(detailViewController, animated: true)
+        }
     }
 }
 

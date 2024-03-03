@@ -8,13 +8,22 @@
 import Foundation
 
 final class DetailRouter: BaseRouter {
-    
-    init(weather: WeatherModel) {
+
+    private init(viewModel: DetailViewModel) {
         super.init()
-        let viewModel = DetailViewModel(weather: weather)
         let viewController = DetailViewController(viewModel: viewModel)
         viewController.hidesBottomBarWhenPushed = true
         viewModel.delegate = viewController
         initialViewController = viewController
+    }
+    
+    convenience init(weather: WeatherModel) {
+        let viewModel = DetailViewModel(weather: weather)
+        self.init(viewModel: viewModel)
+    }
+    
+    convenience init(weatherId: Int) {
+        let viewModel = DetailViewModel(weatherId: weatherId)
+        self.init(viewModel: viewModel)
     }
 }

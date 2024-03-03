@@ -53,5 +53,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func setNavigationBarStyle() {
         UINavigationBar.appearance().prefersLargeTitles = true
         UINavigationItem().largeTitleDisplayMode = .always
+        UILabel.appearance(whenContainedInInstancesOf: [UINavigationBar.self]).adjustsFontSizeToFitWidth = true
     }
 }

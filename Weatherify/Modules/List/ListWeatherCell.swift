@@ -11,13 +11,12 @@ final class ListWeatherCell: UICollectionViewCell {
     
     static let reuseIdentifier = "WeatherListCell"
     
-    private lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [temperatureCityStackView, weatherIcon])
+    private lazy var informationStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [temperatureDescriptionStackView, locationStackView])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = .secondarySystemFill
-        stackView.spacing = 16
-        stackView.distribution = .fillProportionally
-        stackView.alignment = .center
+        stackView.axis = .vertical
+        stackView.spacing = 8
         stackView.clipsToBounds = true
         stackView.layer.cornerRadius = 8
         stackView.layoutMargins = .init(top: 16, left: 16, bottom: 16, right: 16)
@@ -25,16 +24,8 @@ final class ListWeatherCell: UICollectionViewCell {
         return stackView
     }()
     
-    private lazy var temperatureCityStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [weatherTemperatureStackView, locationStackView])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.spacing = 8
-        return stackView
-    }()
-    
-    private lazy var weatherTemperatureStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [temperatureLabel, weatherDescription, UIView()])
+    private lazy var temperatureDescriptionStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [temperatureLabel, weatherDescription])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = 16
         stackView.alignment = .center
@@ -45,6 +36,7 @@ final class ListWeatherCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = .label
         label.font = .systemFont(ofSize: 24, weight: .heavy)
+        label.setContentHuggingPriority(.required, for: .horizontal)
         return label
     }()
     
@@ -57,7 +49,7 @@ final class ListWeatherCell: UICollectionViewCell {
     }()
     
     private lazy var locationStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [locationIcon, cityNameLabel, UIView()])
+        let stackView = UIStackView(arrangedSubviews: [locationIcon, cityNameLabel])
         stackView.spacing = 4
         stackView.alignment = .center
         return stackView
@@ -65,8 +57,9 @@ final class ListWeatherCell: UICollectionViewCell {
     
     private lazy var locationIcon: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(systemName: "mappin")
+        imageView.tintColor = Colors.mapPin
+        imageView.setContentHuggingPriority(.required, for: .horizontal)
         return imageView
     }()
     
@@ -74,7 +67,6 @@ final class ListWeatherCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = .label
         label.font = .systemFont(ofSize: 18, weight: .semibold)
-        label.setContentHuggingPriority(.required, for: .horizontal)
         return label
     }()
     
@@ -82,28 +74,36 @@ final class ListWeatherCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = .systemYellow //TODO: change color
-        imageView.setContentHuggingPriority(.required, for: .horizontal)
         return imageView
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.addSubview(contentStackView)
-        
-        NSLayoutConstraint.activate([
-            contentStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            contentStackView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            contentStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            contentStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            
-            weatherIcon.widthAnchor.constraint(equalToConstant: 30),
-            weatherIcon.heightAnchor.constraint(equalToConstant: 30)
-        ])
+        setupUI()
+        setupConstraints()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupUI() {
+        contentView.addSubview(informationStackView)
+        contentView.addSubview(weatherIcon)
+    }
+    
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            informationStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            informationStackView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            informationStackView.trailingAnchor.constraint(equalTo: weatherIcon.leadingAnchor),
+            informationStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            
+            locationIcon.widthAnchor.constraint(equalToConstant: 20),
+            
+            weatherIcon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            weatherIcon.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24)
+        ])
     }
     
     func configureCell(weather: WeatherModel) {
@@ -111,5 +111,6 @@ final class ListWeatherCell: UICollectionViewCell {
         weatherDescription.text = weather.weatherDescription.rawValue
         cityNameLabel.text = "\(weather.city), \(weather.country)"
         weatherIcon.image = UIImage(systemName: weather.weatherDescription.iconName)
+        weatherIcon.tintColor = Colors.getWeatherColor(for: weather.weatherDescription)
     }
 }

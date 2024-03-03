@@ -35,6 +35,7 @@ struct Forecast: Codable {
     let weatherDescription: WeatherDescription
     let humidity: Double
     let windSpeed: Double
+    var dayOfDate = ""
     
     enum CodingKeys: String, CodingKey {
         case date, temperature

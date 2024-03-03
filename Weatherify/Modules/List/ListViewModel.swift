@@ -16,6 +16,7 @@ protocol ListViewModelDelegate: AnyObject {
 final class ListViewModel: BaseViewModel {
     
     var displayedWeathers: [WeatherModel] = []
+    
     var weathers: [WeatherModel] = [] {
         didSet {
             if searchedWeathers.isEmpty {
@@ -23,14 +24,19 @@ final class ListViewModel: BaseViewModel {
             }
         }
     }
+    
     var searchedWeathers: [WeatherModel] = [] {
         didSet {
             displayedWeathers = searchedWeathers
         }
     }
 
-    var errorMessage: String?
-    var isLoading = false
+    override var isLoading: Bool {
+        didSet {
+            delegate?.isLoading(isLoading)
+        }
+    }
+    
     var isSearching = false
     
     var paginationLimit = 0
@@ -46,7 +52,6 @@ final class ListViewModel: BaseViewModel {
     func fetchWeathers() {
         if !isPaginationReachedEndLimit && !isLoading {
             isLoading = true
-            delegate?.isLoading(true)
             errorMessage = nil
             paginationLimit += 10
             
@@ -63,7 +68,6 @@ final class ListViewModel: BaseViewModel {
                 }
                 
                 self?.isLoading = false
-                self?.delegate?.isLoading(false)
                 self?.delegate?.weathersFetched()
             }
         }

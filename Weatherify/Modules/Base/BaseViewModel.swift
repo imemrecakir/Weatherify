@@ -7,4 +7,7 @@
 
 import Foundation
 
-class BaseViewModel {}
+class BaseViewModel {
+    var errorMessage: String?
+    var isLoading = false
+}
