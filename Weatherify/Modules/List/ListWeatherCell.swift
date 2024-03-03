@@ -14,11 +14,8 @@ final class ListWeatherCell: UICollectionViewCell {
     private lazy var informationStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [temperatureDescriptionStackView, locationStackView])
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = .secondarySystemFill
         stackView.axis = .vertical
         stackView.spacing = 8
-        stackView.clipsToBounds = true
-        stackView.layer.cornerRadius = 8
         stackView.layoutMargins = .init(top: 16, left: 16, bottom: 16, right: 16)
         stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
@@ -88,6 +85,9 @@ final class ListWeatherCell: UICollectionViewCell {
     }
     
     private func setupUI() {
+        contentView.backgroundColor = .secondarySystemFill
+        contentView.clipsToBounds = true
+        contentView.layer.cornerRadius = 8
         contentView.addSubview(informationStackView)
         contentView.addSubview(weatherIcon)
     }
@@ -100,9 +100,12 @@ final class ListWeatherCell: UICollectionViewCell {
             informationStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             
             locationIcon.widthAnchor.constraint(equalToConstant: 20),
+            locationIcon.heightAnchor.constraint(equalToConstant: 20),
             
             weatherIcon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            weatherIcon.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24)
+            weatherIcon.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
+            weatherIcon.widthAnchor.constraint(equalToConstant: 30),
+            weatherIcon.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
     
