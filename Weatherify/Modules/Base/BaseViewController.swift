@@ -34,7 +34,7 @@ class BaseViewControllerClass: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = traitCollection.userInterfaceStyle == .dark ? .systemBackground : .purple
+        view.backgroundColor = .systemBackground
         hideKeyboardWhenTappedAround()
         guard let controller = self as? BaseViewController else {
             return
