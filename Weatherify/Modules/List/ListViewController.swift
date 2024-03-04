@@ -87,12 +87,6 @@ extension ListViewController: ListViewModelDelegate {
         } else {
             reloadCollectionView()
         }
-        
-        viewModel.displayedWeathers.forEach {
-            print("ID - \($0.id) - ")
-        }
-        
-        print("\n\n")
     }
     
     func weathersSearched() {
@@ -181,18 +175,5 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         viewModel.navigateToDetail(index: indexPath.item)
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        let offsetY = scrollView.contentOffset.y
-//        let contentHeight = scrollView.contentSize.height
-//        let screenHeight = scrollView.frame.height
-//        
-//        let threshold: CGFloat = 0
-//        let lastItemIndex = collectionView.numberOfItems(inSection: 0) - 1
-// 
-//        if offsetY + screenHeight + threshold >= contentHeight && lastItemIndex >= 0 {
-//            viewModel.fetchWeathers()
-//        }
     }
 }
