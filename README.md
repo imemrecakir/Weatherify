@@ -10,7 +10,7 @@ Detaylı bilgiler: Hava durumu tahminlerinde sıcaklık, nem ve rüzgar hızı g
 Kullanılan Teknolojiler
 Swift
 Programmatically UIKit
-OpenWeather API
+FreeTestAPI
 Core Data
 MVVM
 Offline Mode
