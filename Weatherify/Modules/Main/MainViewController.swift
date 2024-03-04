@@ -23,7 +23,7 @@ final class MainViewController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tabBar.tintColor = .systemBlue //TODO: change tint color
+        tabBar.tintColor = .tintColor
         tabBar.unselectedItemTintColor = .darkGray
         tabBar.backgroundColor = .secondarySystemBackground
         tabBar.layer.addSublayer(seperator)
